@@ -49,7 +49,7 @@ func (p *PDFData) removeObjByID(objID int) error {
 			return nil
 		}
 	}
-	return errors.New("Not Found")
+	return errors.New("not found")
 }
 
 // GetObjByID get obj by objid
