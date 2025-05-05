@@ -1,7 +1,6 @@
 package gopdf
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"testing"
@@ -30,7 +29,7 @@ func BenchmarkPdfWithImageHolder(b *testing.B) {
 		return
 	}
 
-	bytesOfImg, err := ioutil.ReadFile("./test/res/chilli.jpg")
+	bytesOfImg, err := os.ReadFile("./test/res/chilli.jpg")
 	if err != nil {
 		b.Error(err)
 		return
@@ -82,7 +81,7 @@ func _TestPdfWithImageHolder(t *testing.T) {
 		return
 	}
 
-	bytesOfImg, err := ioutil.ReadFile("./test/res/gopher02.png")
+	bytesOfImg, err := os.ReadFile("./test/res/gopher02.png")
 	if err != nil {
 		t.Error(err)
 		return
@@ -117,14 +116,14 @@ func _TestPdfWithImageHolder(t *testing.T) {
 func TestBuffer(t *testing.T) {
 	b := bytes.NewReader([]byte("ssssssss"))
 
-	b1, err := ioutil.ReadAll(b)
+	b1, err := os.ReadAll(b)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 	fmt.Printf("->%s\n", string(b1))
 	b.Seek(0, 0)
-	b2, err := ioutil.ReadAll(b)
+	b2, err := os.ReadAll(b)
 	if err != nil {
 		t.Error(err)
 		return

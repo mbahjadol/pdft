@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"io/ioutil"
+	"io"
 	"strings"
 )
 
@@ -91,7 +91,7 @@ func parseImg(raw *bytes.Reader) (imgInfo, error) {
 			return info, err
 		}
 		raw.Seek(0, 0)
-		info.data, err = ioutil.ReadAll(raw)
+		info.data, err = io.ReadAll(raw)
 		if err != nil {
 			return info, err
 		}
@@ -320,7 +320,7 @@ func paesePng(f *bytes.Reader, info *imgInfo, imgConfig image.Config) error {
 			return err
 		}
 		defer zipReader.Close()
-		afterZipData, err := ioutil.ReadAll(zipReader)
+		afterZipData, err := io.ReadAll(zipReader)
 		if err != nil {
 			return err
 		}

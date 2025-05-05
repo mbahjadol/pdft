@@ -7,7 +7,6 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 )
@@ -130,7 +129,7 @@ func (i *ImageObj) SetImagePath(path string) error {
 // SetImage set image
 func (i *ImageObj) SetImage(r io.Reader) error {
 
-	data, err := ioutil.ReadAll(r)
+	data, err := io.ReadAll(r)
 	if err != nil {
 		return err
 	}

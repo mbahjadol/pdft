@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
@@ -381,7 +380,7 @@ func (gp *GoPdf) SetFont(family string, style string, size int) error {
 
 // WritePdf : wirte pdf file
 func (gp *GoPdf) WritePdf(pdfPath string) {
-	ioutil.WriteFile(pdfPath, gp.GetBytesPdf(), 0644)
+	os.WriteFile(pdfPath, gp.GetBytesPdf(), 0644)
 }
 
 func (gp *GoPdf) Read(p []byte) (int, error) {
@@ -567,7 +566,7 @@ func (gp *GoPdf) AddTTFFontWithOption(family string, ttfpath string, option TtfO
 	if _, err := os.Stat(ttfpath); os.IsNotExist(err) {
 		return err
 	}
-	data, err := ioutil.ReadFile(ttfpath)
+	data, err := os.ReadFile(ttfpath)
 	if err != nil {
 		return err
 	}
