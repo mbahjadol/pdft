@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"regexp"
 	"strconv"
@@ -205,7 +204,7 @@ func (t *TTFParser) SetUseKerning(use bool) {
 
 // Parse parse
 func (t *TTFParser) Parse(filepath string) error {
-	data, err := ioutil.ReadFile(filepath)
+	data, err := os.ReadFile(filepath)
 	if err != nil {
 		return err
 	}
@@ -220,7 +219,7 @@ func (t *TTFParser) ParseByReader(rd io.Reader) error {
 
 func (t *TTFParser) parse(rd io.Reader) error {
 
-	fontdata, err := ioutil.ReadAll(rd)
+	fontdata, err := io.ReadAll(rd)
 	if err != nil {
 		return err
 	}
@@ -232,7 +231,7 @@ func (t *TTFParser) parse(rd io.Reader) error {
 		return err
 	}
 	if !t.CompareBytes(version, []byte{0x00, 0x01, 0x00, 0x00}) {
-		return errors.New("Unrecognized file (font) format")
+		return errors.New("unrecognized file (font) format")
 	}
 
 	i := uint(0)
