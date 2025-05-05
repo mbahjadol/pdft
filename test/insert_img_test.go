@@ -3,7 +3,7 @@ package test
 import (
 	"encoding/base64"
 	"errors"
-	"io/ioutil"
+	"io"
 	"os"
 	"testing"
 
@@ -169,7 +169,7 @@ func readImg(path string) (string, []byte, error) {
 	}
 	defer f.Close()
 
-	data, err := ioutil.ReadAll(f)
+	data, err := io.ReadAll(f)
 	if err != nil {
 		return "", nil, err
 	}
