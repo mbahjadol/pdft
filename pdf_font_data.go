@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"io"
 
-	gopdf "github.com/signintech/pdft/minigopdf"
+	gopdf "github.com/mbahjadol/pdft/minigopdf"
 )
 
 // PDFFontData font data

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/signintech/pdft"
-	"github.com/signintech/pdft/textbreak"
+	"github.com/mbahjadol/pdft"
+	"github.com/mbahjadol/pdft/textbreak"
 )
 
 // ErrNotFoundKey key not found
