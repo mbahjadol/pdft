@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	gopdf "github.com/mbahjadol/pdft/minigopdf"
 	"github.com/mbahjadol/pdft/textbreak"
@@ -54,6 +55,10 @@ type PDFt struct {
 	curr          current
 	contenters    []Contenter
 	pdfProtection *gopdf.PDFProtection
+
+	// info
+	isUseInfo bool
+	info      *PdfInfo
 }
 
 type current struct {
@@ -61,6 +66,12 @@ type current struct {
 	fontStyle int
 	fontSize  int
 	lineWidth float64
+}
+
+// SetInfo set Document Information Dictionary
+func (i *PDFt) SetInfo(info PdfInfo) {
+	i.info = &info
+	i.isUseInfo = true
 }
 
 func pageHeight() float64 {
@@ -702,11 +713,45 @@ func (i *PDFt) xref(linelens map[int]int, buff *bytes.Buffer, size int, rootID i
 		buff.WriteString(fmt.Sprintf("/Encrypt %d 0 R\n", encryptionObjID))
 		buff.WriteString("/ID [()()]\n")
 	}
+	if i.isUseInfo {
+		i.bindInfo(buff)
+	}
 	buff.WriteString(">>\n")
 
 	buff.WriteString("startxref\n")
 	buff.WriteString(strconv.Itoa(xrefbyteoffset))
 	buff.WriteString("\n%%EOF\n")
+}
+
+func (i *PDFt) bindInfo(buff *bytes.Buffer) {
+	var zerotime time.Time
+	buff.WriteString("/Info <<\n")
+
+	if i.info.Author != "" {
+		buff.WriteString(fmt.Sprintf("/Author <FEFF%s>\n", encodeUtf8(i.info.Author)))
+	}
+
+	if i.info.Title != "" {
+		buff.WriteString(fmt.Sprintf("/Title <FEFF%s>\n", encodeUtf8(i.info.Title)))
+	}
+
+	if i.info.Subject != "" {
+		buff.WriteString(fmt.Sprintf("/Subject <FEFF%s>\n", encodeUtf8(i.info.Subject)))
+	}
+
+	if i.info.Creator != "" {
+		buff.WriteString(fmt.Sprintf("/Creator <FEFF%s>\n", encodeUtf8(i.info.Creator)))
+	}
+
+	if i.info.Producer != "" {
+		buff.WriteString(fmt.Sprintf("/Producer <FEFF%s>\n", encodeUtf8(i.info.Producer)))
+	}
+
+	if !zerotime.Equal(i.info.CreationDate) {
+		buff.WriteString(fmt.Sprintf("/CreationDate(D:%s)>>\n", infodate(i.info.CreationDate)))
+	}
+
+	buff.WriteString(" >>\n")
 }
 
 func (i *PDFt) formatXrefline(n int) string {
@@ -753,4 +798,21 @@ func getConvertedStyle(fontStyle string) (style int) {
 		style = style | Underline
 	}
 	return
+}
+
+func encodeUtf8(str string) string {
+	var buff bytes.Buffer
+	for _, r := range str {
+		c := fmt.Sprintf("%X", r)
+		for len(c) < 4 {
+			c = "0" + c
+		}
+		buff.WriteString(c)
+	}
+	return buff.String()
+}
+
+func infodate(t time.Time) string {
+	ft := t.Format("20060102150405-07'00'")
+	return ft
 }
