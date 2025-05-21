@@ -51,8 +51,8 @@ func setPagesObj(pdf *PDFData) error {
 	}
 
 	pagesObj := pdf.getObjByID(pagesID)
-	if err != nil {
-		return err
+	if pagesObj == nil {
+		return errors.New("pages not found")
 	}
 	pdf.pagesObj = pagesObj
 	return nil
