@@ -3,13 +3,12 @@ package pdft
 import (
 	"errors"
 	"io"
-	"io/ioutil"
 )
 
 // PDFParse parse pdf
 func PDFParse(file io.Reader, outPdf *PDFData) error {
 
-	raw, err := ioutil.ReadAll(file)
+	raw, err := io.ReadAll(file)
 	if err != nil {
 		return err
 	}
