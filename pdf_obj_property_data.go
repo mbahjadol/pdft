@@ -200,7 +200,7 @@ func readObjIDFromDictionaryArr(str string) ([]int, []int, error) {
 }
 
 // ErrorObjectIDNotFound Object ID not found
-var ErrorObjectIDNotFound = errors.New("Object ID not found")
+var ErrorObjectIDNotFound = errors.New("object ID not found")
 
 func readObjIDFromDictionary(str string) (int, int, error) {
 
